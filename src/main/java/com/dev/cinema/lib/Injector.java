@@ -1,5 +1,8 @@
 package com.dev.cinema.lib;
 
+import com.dev.cinema.lib.anno.Dao;
+import com.dev.cinema.lib.anno.Inject;
+import com.dev.cinema.lib.anno.Service;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -10,9 +13,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.dev.cinema.lib.anno.Dao;
-import com.dev.cinema.lib.anno.Inject;
-import com.dev.cinema.lib.anno.Service;
 
 public class Injector {
     private static final Class DAO_CLASS = Dao.class;
