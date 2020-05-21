@@ -1,8 +1,8 @@
 package com.dev.cinema.dao.impl;
 
-import com.dev.cinema.dao.MovieDao;
+import com.dev.cinema.dao.CinemaHallDao;
 import com.dev.cinema.lib.anno.Dao;
-import com.dev.cinema.model.Movie;
+import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.util.HibernateUtil;
 import java.util.List;
 import javax.persistence.criteria.CriteriaQuery;
@@ -10,24 +10,25 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
-public class MovieDaoImpl implements MovieDao {
+public class CinemaHallDaoImpl implements CinemaHallDao {
 
     @Override
-    public Movie add(Movie movie) {
-        Transaction transaction = null;
+    public CinemaHall add(CinemaHall cinemaHall) {
         Session session = null;
+        Transaction transaction = null;
+
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            Long movieId = (Long) session.save(movie);
+            Long movieId = (Long) session.save(cinemaHall);
             transaction.commit();
-            movie.setId(movieId);
-            return movie;
+            cinemaHall.setId(movieId);
+            return cinemaHall;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Error while adding movie. Stacktrace: "
+            throw new RuntimeException("Error while adding cinemaHall. Stacktrace: "
                     + e.getMessage());
         } finally {
             if (session != null) {
@@ -37,16 +38,17 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
-    public List<Movie> getAll() {
+    public List<CinemaHall> getAll() {
         Session session = null;
+
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            CriteriaQuery<Movie> criteriaQuery =
-                    session.getCriteriaBuilder().createQuery(Movie.class);
-            criteriaQuery.from(Movie.class);
+            CriteriaQuery<CinemaHall> criteriaQuery =
+                    session.getCriteriaBuilder().createQuery(CinemaHall.class);
+            criteriaQuery.from(CinemaHall.class);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Error while getting list movies. Stacktrace: "
+            throw new RuntimeException("Error while getting list CinemaHall. Stacktrace: "
                     + e.getMessage());
         } finally {
             if (session != null) {
