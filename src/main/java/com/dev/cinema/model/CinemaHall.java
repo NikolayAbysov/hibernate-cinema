@@ -7,15 +7,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "movie")
-public class Movie {
+@Table(name = "cinema_hall")
+public class CinemaHall {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
+    private Integer capacity;
     private String description;
 
-    public Movie() {
+    public CinemaHall() {
     }
 
     public Long getId() {
@@ -26,12 +26,12 @@ public class Movie {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public Integer getCapacity() {
+        return capacity;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 
     public String getDescription() {
@@ -40,14 +40,5 @@ public class Movie {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{"
-                + "id="
-                + id + ", title='" + title
-                + '\'' + ", description='" + description
-                + '\'' + '}';
     }
 }
