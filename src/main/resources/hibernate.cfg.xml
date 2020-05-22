@@ -15,5 +15,7 @@
         <property name="format_sql">true</property>
 
         <mapping class="com.dev.cinema.model.Movie"/>
+        <mapping class="com.dev.cinema.model.CinemaHall"/>
+        <mapping class="com.dev.cinema.model.MovieSession"/>
     </session-factory>
 </hibernate-configuration>
