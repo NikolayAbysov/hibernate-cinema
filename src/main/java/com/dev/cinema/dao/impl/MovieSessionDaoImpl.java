@@ -1,6 +1,7 @@
 package com.dev.cinema.dao.impl;
 
 import com.dev.cinema.dao.MovieSessionDao;
+import com.dev.cinema.exception.DataProcessingException;
 import com.dev.cinema.lib.anno.Dao;
 import com.dev.cinema.model.MovieSession;
 import com.dev.cinema.util.HibernateUtil;
@@ -31,7 +32,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Error while adding movieSession. Stacktrace: "
+            throw new DataProcessingException("Error while adding movieSession. Stacktrace: "
                     + e.getMessage());
         } finally {
             if (session != null) {
@@ -42,10 +43,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
 
     @Override
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
-        Session session = null;
-
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<MovieSession> criteriaQuery
                     = criteriaBuilder.createQuery(MovieSession.class);
@@ -56,12 +54,8 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             criteriaQuery.where(equalsId, equalsDate);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Error while getting list MovieSession. Stacktrace: "
+            throw new DataProcessingException("Error while getting list MovieSession. Stacktrace: "
                     + e.getMessage());
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 }

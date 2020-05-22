@@ -1,6 +1,7 @@
 package com.dev.cinema.dao.impl;
 
 import com.dev.cinema.dao.CinemaHallDao;
+import com.dev.cinema.exception.DataProcessingException;
 import com.dev.cinema.lib.anno.Dao;
 import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.util.HibernateUtil;
@@ -20,15 +21,15 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            Long movieId = (Long) session.save(cinemaHall);
+            Long cinemaHallId = (Long) session.save(cinemaHall);
             transaction.commit();
-            cinemaHall.setId(movieId);
+            cinemaHall.setId(cinemaHallId);
             return cinemaHall;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Error while adding cinemaHall. Stacktrace: "
+            throw new DataProcessingException("Error while adding cinemaHall. Stacktrace: "
                     + e.getMessage());
         } finally {
             if (session != null) {
@@ -39,21 +40,14 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
 
     @Override
     public List<CinemaHall> getAll() {
-        Session session = null;
-
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaQuery<CinemaHall> criteriaQuery =
                     session.getCriteriaBuilder().createQuery(CinemaHall.class);
             criteriaQuery.from(CinemaHall.class);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Error while getting list CinemaHall. Stacktrace: "
+            throw new DataProcessingException("Error while getting list CinemaHall. Stacktrace: "
                     + e.getMessage());
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 }
