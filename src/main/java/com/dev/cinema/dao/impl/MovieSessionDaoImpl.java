@@ -32,8 +32,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Error while adding movieSession. Stacktrace: "
-                    + e.getMessage());
+            throw new DataProcessingException("Error while adding movieSession. Stacktrace: ", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -54,8 +53,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             criteriaQuery.where(equalsId, equalsDate);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Error while getting list MovieSession. Stacktrace: "
-                    + e.getMessage());
+            throw new DataProcessingException("Error while getting list MovieSession. Stacktrace: ", e);
         }
     }
 }

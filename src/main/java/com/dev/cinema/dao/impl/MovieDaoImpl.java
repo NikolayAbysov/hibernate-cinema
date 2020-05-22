@@ -28,8 +28,7 @@ public class MovieDaoImpl implements MovieDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Error while adding movie. Stacktrace: "
-                    + e.getMessage());
+            throw new DataProcessingException("Error while adding movie. Stacktrace: ", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -45,8 +44,7 @@ public class MovieDaoImpl implements MovieDao {
             criteriaQuery.from(Movie.class);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Error while getting list movies. Stacktrace: "
-                    + e.getMessage());
+            throw new DataProcessingException("Error while getting list movies. Stacktrace: ", e);
         }
     }
 }
