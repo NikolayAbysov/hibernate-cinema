@@ -42,7 +42,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
 
     @Override
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<MovieSession> criteriaQuery
                     = criteriaBuilder.createQuery(MovieSession.class);
@@ -53,7 +53,8 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             criteriaQuery.where(equalsId, equalsDate);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Error while getting list MovieSession. Stacktrace: ", e);
+            throw new DataProcessingException("Error while getting list MovieSession. "
+                    + "Stacktrace: ", e);
         }
     }
 }

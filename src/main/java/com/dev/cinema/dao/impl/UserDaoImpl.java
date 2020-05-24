@@ -1,35 +1,35 @@
 package com.dev.cinema.dao.impl;
 
-import com.dev.cinema.dao.CinemaHallDao;
+import com.dev.cinema.dao.UserDao;
 import com.dev.cinema.exception.DataProcessingException;
 import com.dev.cinema.lib.anno.Dao;
-import com.dev.cinema.model.CinemaHall;
+import com.dev.cinema.model.User;
 import com.dev.cinema.util.HibernateUtil;
 import java.util.List;
-import javax.persistence.criteria.CriteriaQuery;
+import java.util.Optional;
+import javax.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
-public class CinemaHallDaoImpl implements CinemaHallDao {
-
+public class UserDaoImpl implements UserDao {
     @Override
-    public CinemaHall add(CinemaHall cinemaHall) {
+    public User add(User user) {
         Session session = null;
         Transaction transaction = null;
 
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            Long cinemaHallId = (Long) session.save(cinemaHall);
+            Long userId = (Long) session.save(user);
             transaction.commit();
-            cinemaHall.setId(cinemaHallId);
-            return cinemaHall;
+            user.setId(userId);
+            return user;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Error while adding cinemaHall. Stacktrace: ", e);
+            throw new DataProcessingException("Error while adding user. Stacktrace: ", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -38,14 +38,14 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
     }
 
     @Override
-    public List<CinemaHall> getAll() {
+    public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<CinemaHall> criteriaQuery =
-                    session.getCriteriaBuilder().createQuery(CinemaHall.class);
-            criteriaQuery.from(CinemaHall.class);
-            return session.createQuery(criteriaQuery).getResultList();
+            Query query = session.createQuery("FROM User usr WHERE usr.email = :paramName");
+            query.setParameter("paramName", email);
+            List<User> list = query.getResultList();
+            return list.stream().findFirst();
         } catch (Exception e) {
-            throw new DataProcessingException("Error while getting list CinemaHall. "
+            throw new DataProcessingException("Error while searching user by email. "
                     + "Stacktrace: ", e);
         }
     }
