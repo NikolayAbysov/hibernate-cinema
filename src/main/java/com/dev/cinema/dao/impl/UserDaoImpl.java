@@ -5,11 +5,10 @@ import com.dev.cinema.exception.DataProcessingException;
 import com.dev.cinema.lib.anno.Dao;
 import com.dev.cinema.model.User;
 import com.dev.cinema.util.HibernateUtil;
-import java.util.List;
 import java.util.Optional;
-import javax.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
@@ -41,8 +40,7 @@ public class UserDaoImpl implements UserDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery("FROM User usr WHERE usr.email = :paramName");
             query.setParameter("paramName", email);
-            List<User> list = query.getResultList();
-            return list.stream().findFirst();
+            return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Error while searching user by email. "
                     + "Stacktrace: ", e);

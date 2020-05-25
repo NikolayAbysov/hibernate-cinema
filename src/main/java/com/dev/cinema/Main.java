@@ -9,6 +9,7 @@ import com.dev.cinema.security.AuthenticationService;
 import com.dev.cinema.service.CinemaHallService;
 import com.dev.cinema.service.MovieService;
 import com.dev.cinema.service.MovieSessionService;
+import com.dev.cinema.service.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,6 +25,8 @@ public class Main {
             = (MovieSessionService) INJECTOR.getInstance(MovieSessionService.class);
     private static final AuthenticationService authenticationService
             = (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
+    private static final UserService userService
+            = (UserService) INJECTOR.getInstance(UserService.class);
 
     public static void main(String[] args) {
         Movie movie = new Movie();
@@ -51,5 +54,7 @@ public class Main {
         user.setPassword("123");
         authenticationService.register("kkkkk","123");
         authenticationService.login("kkkkk","123");
+        //authenticationService.register("kkkkk","123");
+        System.out.println(userService.findByEmail("kkkkk").get());
     }
 }
