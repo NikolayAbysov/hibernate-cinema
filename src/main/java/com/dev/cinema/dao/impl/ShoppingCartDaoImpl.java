@@ -41,11 +41,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     "FROM ShoppingCart s "
                             + "LEFT JOIN FETCH s.tickets Ticket "
                             + "WHERE s.user =: user", ShoppingCart.class);
-                    query.setParameter("user", user);
+            query.setParameter("user", user);
             return query.uniqueResult();
-        }
-        catch (Exception e) {
-            throw new DataProcessingException("Error while get shopping Cart by user. Stack trace: ", e);
+        } catch (Exception e) {
+            throw new DataProcessingException("Error while get shopping Cart by user. "
+                    + "Stack trace: ", e);
         }
     }
 
@@ -62,7 +62,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Error while updating shoppingCart. Stack trace: ", e);
+            throw new DataProcessingException("Error while updating shoppingCart. "
+                    + "Stack trace: ", e);
         } finally {
             if (session != null) {
                 session.close();
