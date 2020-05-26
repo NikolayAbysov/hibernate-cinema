@@ -1,33 +1,33 @@
 package com.dev.cinema.dao.impl;
 
-import com.dev.cinema.dao.MovieDao;
+import com.dev.cinema.dao.UserDao;
 import com.dev.cinema.exception.DataProcessingException;
 import com.dev.cinema.lib.anno.Dao;
-import com.dev.cinema.model.Movie;
+import com.dev.cinema.model.User;
 import com.dev.cinema.util.HibernateUtil;
-import java.util.List;
-import javax.persistence.criteria.CriteriaQuery;
+import java.util.Optional;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
-public class MovieDaoImpl implements MovieDao {
-
+public class UserDaoImpl implements UserDao {
     @Override
-    public Movie add(Movie movie) {
-        Transaction transaction = null;
+    public User add(User user) {
         Session session = null;
+        Transaction transaction = null;
+
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(movie);
+            session.save(user);
             transaction.commit();
-            return movie;
+            return user;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Error while adding movie. Stacktrace: ", e);
+            throw new DataProcessingException("Error while adding user. Stacktrace: ", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -36,14 +36,14 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
-    public List<Movie> getAll() {
+    public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<Movie> criteriaQuery =
-                    session.getCriteriaBuilder().createQuery(Movie.class);
-            criteriaQuery.from(Movie.class);
-            return session.createQuery(criteriaQuery).getResultList();
+            Query query = session.createQuery("FROM User usr WHERE usr.email = :paramName");
+            query.setParameter("paramName", email);
+            return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Error while getting list movies. Stacktrace: ", e);
+            throw new DataProcessingException("Error while searching user by email. "
+                    + "Stacktrace: ", e);
         }
     }
 }

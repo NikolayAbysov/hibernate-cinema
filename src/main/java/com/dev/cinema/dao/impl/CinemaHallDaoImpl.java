@@ -21,9 +21,8 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            Long cinemaHallId = (Long) session.save(cinemaHall);
+            session.save(cinemaHall);
             transaction.commit();
-            cinemaHall.setId(cinemaHallId);
             return cinemaHall;
         } catch (Exception e) {
             if (transaction != null) {
@@ -39,13 +38,14 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
 
     @Override
     public List<CinemaHall> getAll() {
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaQuery<CinemaHall> criteriaQuery =
                     session.getCriteriaBuilder().createQuery(CinemaHall.class);
             criteriaQuery.from(CinemaHall.class);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Error while getting list CinemaHall. Stacktrace: ", e);
+            throw new DataProcessingException("Error while getting list CinemaHall. "
+                    + "Stacktrace: ", e);
         }
     }
 }
