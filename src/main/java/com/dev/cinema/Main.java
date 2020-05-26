@@ -54,7 +54,7 @@ public class Main {
         user.setPassword("123");
         authenticationService.register("kkkkk","123");
         authenticationService.login("kkkkk","123");
-        //authenticationService.register("kkkkk","123");
         System.out.println(userService.findByEmail("kkkkk").get());
+        authenticationService.register("kkkkk","123");
     }
 }
