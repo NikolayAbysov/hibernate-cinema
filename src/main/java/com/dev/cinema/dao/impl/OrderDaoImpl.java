@@ -19,8 +19,8 @@ public class OrderDaoImpl implements OrderDao {
     public Order completeOrder(List<Ticket> tickets, User user) {
         Session session = null;
         Transaction transaction = null;
-        Order order = new Order(tickets, user, LocalDateTime.now());
         try {
+            Order order = new Order(tickets, user, LocalDateTime.now());
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(order);
