@@ -2,15 +2,15 @@ package com.dev.cinema.dao.impl;
 
 import com.dev.cinema.dao.MovieDao;
 import com.dev.cinema.exception.DataProcessingException;
-import com.dev.cinema.lib.anno.Dao;
 import com.dev.cinema.model.Movie;
 import com.dev.cinema.util.HibernateUtil;
 import java.util.List;
 import javax.persistence.criteria.CriteriaQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class MovieDaoImpl implements MovieDao {
 
     @Override

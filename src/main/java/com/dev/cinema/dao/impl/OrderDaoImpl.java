@@ -2,7 +2,6 @@ package com.dev.cinema.dao.impl;
 
 import com.dev.cinema.dao.OrderDao;
 import com.dev.cinema.exception.DataProcessingException;
-import com.dev.cinema.lib.anno.Dao;
 import com.dev.cinema.model.Order;
 import com.dev.cinema.model.Ticket;
 import com.dev.cinema.model.User;
@@ -12,8 +11,9 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class OrderDaoImpl implements OrderDao {
     @Override
     public Order completeOrder(List<Ticket> tickets, User user) {

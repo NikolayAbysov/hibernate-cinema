@@ -1,16 +1,17 @@
 package com.dev.cinema.service.impl;
 
 import com.dev.cinema.dao.UserDao;
-import com.dev.cinema.lib.anno.Inject;
-import com.dev.cinema.lib.anno.Service;
 import com.dev.cinema.model.User;
 import com.dev.cinema.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Inject
+    @Autowired
     private UserDao userDao;
 
     @Override

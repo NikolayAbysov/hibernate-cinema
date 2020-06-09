@@ -1,15 +1,16 @@
 package com.dev.cinema.service.impl;
 
 import com.dev.cinema.dao.MovieDao;
-import com.dev.cinema.lib.anno.Inject;
-import com.dev.cinema.lib.anno.Service;
 import com.dev.cinema.model.Movie;
 import com.dev.cinema.service.MovieService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class MovieServiceImpl implements MovieService {
-    @Inject
+    @Autowired
     private MovieDao movieDao;
 
     @Override
