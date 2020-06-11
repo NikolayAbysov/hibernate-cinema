@@ -15,12 +15,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
     @Autowired
     private ShoppingCartService shoppingCartService;
+    @Autowired
+    private HashUtil hashUtil;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         User user = userService.findByEmail(email).orElseThrow(()
                 -> new AuthenticationException("No such user"));
-        String hashPassword = HashUtil.hashPassword(password, user.getSalt());
+        String hashPassword = hashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashPassword)) {
             return user;
         }
@@ -34,8 +36,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = new User();
         user.setEmail(email);
-        byte[] salt = HashUtil.getSalt();
-        user.setPassword(HashUtil.hashPassword(password, salt));
+        byte[] salt = hashUtil.getSalt();
+        user.setPassword(hashUtil.hashPassword(password, salt));
         user.setSalt(salt);
         userService.add(user);
         shoppingCartService.registerNewShoppingCart(user);

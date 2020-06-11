@@ -7,5 +7,7 @@ public interface MovieService {
 
     Movie add(Movie movie);
 
+    Movie getMovie(Long id);
+
     List<Movie> getAll();
 }

@@ -41,6 +41,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User getUser(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(User.class, id);
+        } catch (Exception e) {
+            throw new DataProcessingException("Error while getting User. "
+                    + "Stacktrace: ", e);
+        }
+    }
+
+    @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery("FROM User usr WHERE usr.email = :paramName");

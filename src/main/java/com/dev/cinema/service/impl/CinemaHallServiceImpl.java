@@ -9,13 +9,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CinemaHallServiceImpl implements CinemaHallService {
-
     @Autowired
     private CinemaHallDao cinemaHallDao;
 
     @Override
     public CinemaHall add(CinemaHall cinemaHall) {
         return cinemaHallDao.add(cinemaHall);
+    }
+
+    @Override
+    public CinemaHall getCinemaHall(Long id) {
+        return cinemaHallDao.getCinemaHall(id);
     }
 
     @Override
