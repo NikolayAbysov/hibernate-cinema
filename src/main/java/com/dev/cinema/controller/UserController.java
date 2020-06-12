@@ -1,7 +1,8 @@
 package com.dev.cinema.controller;
 
 import com.dev.cinema.dto.UserResponseDto;
-import com.dev.cinema.mapper.ModelMapper;
+import com.dev.cinema.exception.NoUserException;
+import com.dev.cinema.mapper.UserMapper;
 import com.dev.cinema.model.User;
 import com.dev.cinema.service.UserService;
 import java.util.Optional;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private ModelMapper modelMapper;
+    private UserMapper userMapper;
     @Autowired
     private UserService userService;
 
@@ -24,10 +25,10 @@ public class UserController {
         Optional<User> userOptional = userService.findByEmail(email);
         User user;
         if (userOptional.isEmpty()) {
-            user = new User();
+            throw new NoUserException("User with email: " + email + "not found");
         } else {
             user = userOptional.get();
         }
-        return modelMapper.map(user);
+        return userMapper.map(user);
     }
 }

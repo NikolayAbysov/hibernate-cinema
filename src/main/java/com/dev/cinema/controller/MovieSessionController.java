@@ -2,12 +2,12 @@ package com.dev.cinema.controller;
 
 import com.dev.cinema.dto.MovieSessionRequestAddDto;
 import com.dev.cinema.dto.MovieSessionResponseDto;
-import com.dev.cinema.mapper.ModelMapper;
+import com.dev.cinema.mapper.MovieSessionMapper;
 import com.dev.cinema.model.MovieSession;
 import com.dev.cinema.service.MovieSessionService;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/moviesessions")
 public class MovieSessionController {
     @Autowired
-    private ModelMapper modelMapper;
+    private MovieSessionMapper movieSessionMapper;
     @Autowired
     private MovieSessionService movieSessionService;
 
     @PostMapping
     public void addMovieSession(@RequestBody MovieSessionRequestAddDto movieSessionRequestAddDto) {
-        movieSessionService.add(modelMapper.map(movieSessionRequestAddDto));
+        movieSessionService.add(movieSessionMapper.map(movieSessionRequestAddDto));
     }
 
     @GetMapping("/available")
@@ -37,11 +37,11 @@ public class MovieSessionController {
                                                                      .ISO
                                                                      .DATE_TIME)
                                                                      LocalDate date) {
-        List<MovieSessionResponseDto> list = new ArrayList<>();
         List<MovieSession> movieSessions = movieSessionService.findAvailableSessions(movieId, date);
-        for (MovieSession movieSession : movieSessions) {
-            list.add(modelMapper.map(movieSession));
-        }
-        return list;
+        return movieSessions.stream()
+                .map(m -> movieSessionMapper
+                        .map(m))
+                .collect(Collectors
+                        .toList());
     }
 }
