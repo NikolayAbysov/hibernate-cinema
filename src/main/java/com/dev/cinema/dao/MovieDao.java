@@ -7,5 +7,7 @@ public interface MovieDao {
 
     Movie add(Movie movie);
 
+    Movie getMovie(Long id);
+
     List<Movie> getAll();
 }

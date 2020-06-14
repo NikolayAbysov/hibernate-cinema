@@ -45,6 +45,16 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     }
 
     @Override
+    public MovieSession getSession(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(MovieSession.class, id);
+        } catch (Exception e) {
+            throw new DataProcessingException("Error while getting MovieSession. "
+                    + "Stacktrace: ", e);
+        }
+    }
+
+    @Override
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
         try (Session session = sessionFactory.openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

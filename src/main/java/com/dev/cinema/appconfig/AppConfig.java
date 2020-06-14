@@ -1,6 +1,5 @@
 package com.dev.cinema.appconfig;
 
-import com.dev.cinema.model.User;
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -15,7 +14,10 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 @PropertySource("classpath:db.properties")
 @ComponentScan (basePackages = {
         "com.dev.cinema.service",
-        "com.dev.cinema.dao"
+        "com.dev.cinema.dao",
+        "com.dev.cinema.mapper",
+        "com.dev.cinema.util",
+        "com.dev.cinema.security"
 })
 public class AppConfig {
     private final Environment environment;
@@ -42,7 +44,7 @@ public class AppConfig {
         properties.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
         properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
         factoryBean.setHibernateProperties(properties);
-        factoryBean.setAnnotatedClasses(User.class);
+        factoryBean.setPackagesToScan("com.dev.cinema.model");
         return factoryBean;
     }
 }

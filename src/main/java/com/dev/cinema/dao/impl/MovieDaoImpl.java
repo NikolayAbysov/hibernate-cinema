@@ -40,6 +40,16 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
+    public Movie getMovie(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Movie.class, id);
+        } catch (Exception e) {
+            throw new DataProcessingException("Error while getting Movie. "
+                    + "Stacktrace: ", e);
+        }
+    }
+
+    @Override
     public List<Movie> getAll() {
         try (Session session = sessionFactory.openSession()) {
             CriteriaQuery<Movie> criteriaQuery =
@@ -49,5 +59,6 @@ public class MovieDaoImpl implements MovieDao {
         } catch (Exception e) {
             throw new DataProcessingException("Error while getting list movies. Stacktrace: ", e);
         }
+
     }
 }
