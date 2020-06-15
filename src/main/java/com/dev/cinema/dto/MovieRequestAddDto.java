@@ -1,6 +1,9 @@
 package com.dev.cinema.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class MovieRequestAddDto {
+    @NotNull(message = "Empty title field!")
     private String title;
     private String description;
 
