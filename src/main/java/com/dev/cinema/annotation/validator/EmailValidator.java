@@ -5,15 +5,12 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class EmailValidator implements ConstraintValidator<EmailConstraint, String> {
+    private static final String MATCH_STRING = "^\\S+@\\S+\\.\\S+$";
 
     @Override
-    public void initialize(EmailConstraint contactNumber) {
-    }
-
-    @Override
-    public boolean isValid(String contactField,
+    public boolean isValid(String email,
                            ConstraintValidatorContext cxt) {
-        return contactField != null && contactField.matches("^\\S+@\\S+\\.\\S+$");
+        return email != null && email.matches(MATCH_STRING);
     }
 
 }
