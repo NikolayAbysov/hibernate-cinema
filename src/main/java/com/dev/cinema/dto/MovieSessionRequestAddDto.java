@@ -1,10 +1,14 @@
 package com.dev.cinema.dto;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 
 public class MovieSessionRequestAddDto {
+    @NotNull(message = "Empty movieId field!")
     private Long movieId;
+    @NotNull(message = "Empty cinemaHallId field!")
     private Long cinemaHallId;
+    @NotNull(message = "Empty showTime field!")
     private LocalDateTime showTime;
 
     public Long getMovieId() {

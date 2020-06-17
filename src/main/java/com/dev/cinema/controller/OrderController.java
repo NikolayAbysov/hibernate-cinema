@@ -11,7 +11,9 @@ import com.dev.cinema.service.ShoppingCartService;
 import com.dev.cinema.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,15 +34,15 @@ public class OrderController {
     private ShoppingCartService shoppingCartService;
 
     @PostMapping("/complete")
-    public void completeOrder(@RequestBody OrderRequestAddDto orderRequestAddDto) {
+    public void completeOrder(@RequestBody @Valid OrderRequestAddDto orderRequestAddDto) {
         User user = userService.findByEmail(orderRequestAddDto.getUserEmail()).get();
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         orderService.completeOrder(shoppingCart.getTickets(), user);
     }
 
     @GetMapping
-    public List<OrderResponseDto> getOrders(@RequestParam Long userId) {
-        User user = userService.getUser(userId);
+    public List<OrderResponseDto> getOrders(@RequestParam Authentication authentication) {
+        User user = userService.findByEmail(authentication.getName()).get();
         List<Order> orders = orderService.getOrderHistory(user);
         return orders.stream()
                 .map(o -> orderMapper

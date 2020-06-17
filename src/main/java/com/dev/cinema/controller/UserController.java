@@ -7,6 +7,7 @@ import com.dev.cinema.model.User;
 import com.dev.cinema.service.UserService;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,11 +22,11 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/byemail")
-    public UserResponseDto getUserByEmail(@RequestParam String email) {
-        Optional<User> userOptional = userService.findByEmail(email);
+    public UserResponseDto getUserByEmail(@RequestParam Authentication authentication) {
+        Optional<User> userOptional = userService.findByEmail(authentication.getName());
         User user;
         if (userOptional.isEmpty()) {
-            throw new NoUserException("User with email: " + email + "not found");
+            throw new NoUserException("User with email: " + authentication.getName() + "not found");
         } else {
             user = userOptional.get();
         }
