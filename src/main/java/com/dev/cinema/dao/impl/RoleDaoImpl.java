@@ -42,9 +42,10 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public Role getRole(String roleName) {
         try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("FROM Role role WHERE role.roleName = :paramName");
+            Query<Role> query = session.createQuery("FROM Role role "
+                    + "WHERE role.roleName = :paramName", Role.class);
             query.setParameter("paramName", roleName);
-            return (Role) query.uniqueResult();
+            return query.uniqueResult();
         } catch (Exception e) {
             throw new DataProcessingException("Error while searching role. "
                     + "Stacktrace: ", e);

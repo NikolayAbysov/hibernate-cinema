@@ -5,6 +5,7 @@ import com.dev.cinema.model.User;
 import com.dev.cinema.service.UserService;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,6 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private User findUserByUsername(String username) {
+        Authentication authentication;
         Optional<User> userOptional = userService.findByEmail(username);
         return userOptional.orElse(null);
     }
