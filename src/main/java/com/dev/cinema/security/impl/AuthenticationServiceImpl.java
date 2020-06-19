@@ -5,8 +5,8 @@ import com.dev.cinema.model.User;
 import com.dev.cinema.security.AuthenticationService;
 import com.dev.cinema.service.ShoppingCartService;
 import com.dev.cinema.service.UserService;
-import com.dev.cinema.util.HashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,14 +16,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private ShoppingCartService shoppingCartService;
     @Autowired
-    private HashUtil hashUtil;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         User user = userService.findByEmail(email).orElseThrow(()
                 -> new AuthenticationException("No such user"));
-        String hashPassword = hashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashPassword)) {
+        if (passwordEncoder.matches(password, user.getPassword())) {
             return user;
         }
         throw new AuthenticationException("Incorrect login or password");
@@ -36,9 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = new User();
         user.setEmail(email);
-        byte[] salt = hashUtil.getSalt();
-        user.setPassword(hashUtil.hashPassword(password, salt));
-        user.setSalt(salt);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.add(user);
         shoppingCartService.registerNewShoppingCart(user);
         return user;
