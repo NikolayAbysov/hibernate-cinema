@@ -13,7 +13,6 @@ import com.dev.cinema.service.impl.CinemaHallServiceImpl;
 import java.time.LocalDateTime;
 import java.util.Set;
 import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,25 +24,25 @@ public class InjectDataController {
     private MovieSession movieSession;
     private User user;
     private User admin;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private CinemaHallServiceImpl cinemaHallService;
-    @Autowired
-    private MovieService movieService;
-    @Autowired
-    private MovieSessionService movieSessionService;
+    private final UserService userService;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
+    private final CinemaHallServiceImpl cinemaHallService;
+    private final MovieService movieService;
+    private final MovieSessionService movieSessionService;
 
-    public InjectDataController() {
+    public InjectDataController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder, CinemaHallServiceImpl cinemaHallService, MovieService movieService, MovieSessionService movieSessionService) {
         this.cinemaHall = new CinemaHall();
         this.movie = new Movie();
         this.movieSession = new MovieSession();
         this.user = new User();
         this.admin = new User();
+        this.userService = userService;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
+        this.cinemaHallService = cinemaHallService;
+        this.movieService = movieService;
+        this.movieSessionService = movieSessionService;
     }
 
     @PostConstruct

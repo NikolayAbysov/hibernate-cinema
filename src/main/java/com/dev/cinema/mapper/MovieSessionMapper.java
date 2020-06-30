@@ -7,15 +7,17 @@ import com.dev.cinema.model.Movie;
 import com.dev.cinema.model.MovieSession;
 import com.dev.cinema.service.CinemaHallService;
 import com.dev.cinema.service.MovieService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MovieSessionMapper {
-    @Autowired
-    private MovieService movieService;
-    @Autowired
-    private CinemaHallService cinemaHallService;
+    private final MovieService movieService;
+    private final CinemaHallService cinemaHallService;
+
+    public MovieSessionMapper(MovieService movieService, CinemaHallService cinemaHallService) {
+        this.movieService = movieService;
+        this.cinemaHallService = cinemaHallService;
+    }
 
     public MovieSession map(MovieSessionRequestAddDto movieSessionRequestAddDto) {
         Movie movie = movieService.getMovie(movieSessionRequestAddDto.getMovieId());

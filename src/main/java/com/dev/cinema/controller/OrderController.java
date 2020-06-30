@@ -12,7 +12,6 @@ import com.dev.cinema.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,14 +23,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-    @Autowired
-    private OrderMapper orderMapper;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private ShoppingCartService shoppingCartService;
+    private final OrderMapper orderMapper;
+    private final UserService userService;
+    private final OrderService orderService;
+    private final ShoppingCartService shoppingCartService;
+
+    public OrderController(OrderMapper orderMapper, UserService userService, OrderService orderService, ShoppingCartService shoppingCartService) {
+        this.orderMapper = orderMapper;
+        this.userService = userService;
+        this.orderService = orderService;
+        this.shoppingCartService = shoppingCartService;
+    }
 
     @PostMapping("/complete")
     public void completeOrder(@RequestBody @Valid OrderRequestAddDto orderRequestAddDto) {
@@ -45,8 +47,7 @@ public class OrderController {
         User user = userService.findByEmail(authentication.getName()).get();
         List<Order> orders = orderService.getOrderHistory(user);
         return orders.stream()
-                .map(o -> orderMapper
-                        .map(o))
+                .map(orderMapper::map)
                 .collect(Collectors
                         .toList());
     }

@@ -8,7 +8,6 @@ import com.dev.cinema.service.MovieService;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,10 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
-    @Autowired
-    private MovieMapper movieMapper;
-    @Autowired
-    private MovieService movieService;
+    private final MovieMapper movieMapper;
+    private final MovieService movieService;
+
+    public MovieController(MovieMapper movieMapper, MovieService movieService) {
+        this.movieMapper = movieMapper;
+        this.movieService = movieService;
+    }
 
     @PostMapping
     public void addMovie(@Valid @RequestBody MovieRequestAddDto movieRequestAddDto) {
@@ -32,8 +34,7 @@ public class MovieController {
     public List<MovieDetailsResponseDto> getMovies() {
         List<Movie> movies = movieService.getAll();
         return movies.stream()
-                .map(m -> movieMapper
-                        .map(m))
+                .map(movieMapper::map)
                 .collect(Collectors
                         .toList());
     }
