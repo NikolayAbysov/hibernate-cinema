@@ -23,7 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/byemail")
+    @GetMapping("/by-email")
     public UserResponseDto getUserByEmail(@RequestParam Authentication authentication) {
         Optional<User> userOptional = userService.findByEmail(authentication.getName());
         User user;

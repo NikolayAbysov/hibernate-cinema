@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cinemahalls")
+@RequestMapping("/cinema-halls")
 public class CinemaHallController {
     private final CinemaHallMapper cinemaHallMapper;
     private final CinemaHallService cinemaHallService;
 
-    public CinemaHallController(CinemaHallMapper cinemaHallMapper, CinemaHallService cinemaHallService) {
+    public CinemaHallController(CinemaHallMapper cinemaHallMapper,
+                                CinemaHallService cinemaHallService) {
         this.cinemaHallMapper = cinemaHallMapper;
         this.cinemaHallService = cinemaHallService;
     }

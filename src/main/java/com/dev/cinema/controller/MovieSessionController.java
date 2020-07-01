@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/moviesessions")
+@RequestMapping("/movie-sessions")
 public class MovieSessionController {
     private final MovieSessionMapper movieSessionMapper;
     private final MovieSessionService movieSessionService;
 
-    public MovieSessionController(MovieSessionMapper movieSessionMapper, MovieSessionService movieSessionService) {
+    public MovieSessionController(MovieSessionMapper movieSessionMapper,
+                                  MovieSessionService movieSessionService) {
         this.movieSessionMapper = movieSessionMapper;
         this.movieSessionService = movieSessionService;
     }

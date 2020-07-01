@@ -14,7 +14,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final ShoppingCartService shoppingCartService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthenticationServiceImpl(UserService userService, ShoppingCartService shoppingCartService, PasswordEncoder passwordEncoder) {
+    public AuthenticationServiceImpl(UserService userService,
+                                     ShoppingCartService shoppingCartService,
+                                     PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.shoppingCartService = shoppingCartService;
         this.passwordEncoder = passwordEncoder;

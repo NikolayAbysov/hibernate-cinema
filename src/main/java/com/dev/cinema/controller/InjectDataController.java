@@ -14,16 +14,13 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
-@RestController
+@Component
 public class InjectDataController {
-
     private CinemaHall cinemaHall;
     private Movie movie;
     private MovieSession movieSession;
-    private User user;
-    private User admin;
     private final UserService userService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
@@ -31,12 +28,14 @@ public class InjectDataController {
     private final MovieService movieService;
     private final MovieSessionService movieSessionService;
 
-    public InjectDataController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder, CinemaHallServiceImpl cinemaHallService, MovieService movieService, MovieSessionService movieSessionService) {
+    public InjectDataController(UserService userService, RoleService roleService,
+                                PasswordEncoder passwordEncoder,
+                                CinemaHallServiceImpl cinemaHallService,
+                                MovieService movieService,
+                                MovieSessionService movieSessionService) {
         this.cinemaHall = new CinemaHall();
         this.movie = new Movie();
         this.movieSession = new MovieSession();
-        this.user = new User();
-        this.admin = new User();
         this.userService = userService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
@@ -79,11 +78,12 @@ public class InjectDataController {
     }
 
     private void initUser() {
-        user.setEmail("shion");
+        User user = new User();
+        user.setEmail("shion@ukr.net");
         user.setPassword(passwordEncoder.encode("123"));
         user.setRoles(Set.of(roleService.getRole("USER")));
         userService.add(user);
-
+        User admin = new User();
         admin.setEmail("admin");
         admin.setPassword(passwordEncoder.encode("123"));
         admin.setRoles(Set.of(roleService.getRole("ADMIN")));
