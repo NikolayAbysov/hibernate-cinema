@@ -19,10 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = findUserByUsername(email);
+        Optional<User> userOptional = findUserByUsername(email);
 
         UserBuilder builder;
-        if (user != null) {
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
             String[] roles = user.getRoles().stream()
                     .map(Role::getRoleName)
                     .toArray(String[]::new);
@@ -36,8 +37,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return builder.build();
     }
 
-    private User findUserByUsername(String username) {
-        Optional<User> userOptional = userService.findByEmail(username);
-        return userOptional.orElse(null);
+    private Optional<User> findUserByUsername(String username) {
+        return userService.findByEmail(username);
     }
 }

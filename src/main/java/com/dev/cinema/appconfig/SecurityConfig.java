@@ -14,8 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
@@ -30,13 +33,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/inject", "/register")
                 .permitAll()
-                .antMatchers(HttpMethod.POST,"/orders/complete", "/shoppingcarts/**")
+                .antMatchers(HttpMethod.POST,"/orders/complete", "/shopping-carts/**")
                 .hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/cinemahalls/**", "/movies",
-                        "/moviesessions/**")
+                .antMatchers(HttpMethod.POST, "/cinema-halls/**", "/movies",
+                        "/movie-sessions/**")
                 .hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/users/byemail", "/hello", "/movies",
-                        "/cinemahalls", "/shoppingcarts", "/moviesessions/available", "/orders")
+                .antMatchers(HttpMethod.GET, "/users/by-email", "/hello", "/movies",
+                        "/cinema-halls", "/shopping-carts", "/movie-sessions/available", "/orders")
                 .hasAnyRole("USER", "ADMIN")
                 .anyRequest()
                 .authenticated()

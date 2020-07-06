@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/moviesessions")
+@RequestMapping("/movie-sessions")
 public class MovieSessionController {
-    @Autowired
-    private MovieSessionMapper movieSessionMapper;
-    @Autowired
-    private MovieSessionService movieSessionService;
+    private final MovieSessionMapper movieSessionMapper;
+    private final MovieSessionService movieSessionService;
+
+    public MovieSessionController(MovieSessionMapper movieSessionMapper,
+                                  MovieSessionService movieSessionService) {
+        this.movieSessionMapper = movieSessionMapper;
+        this.movieSessionService = movieSessionService;
+    }
 
     @PostMapping
     public void addMovieSession(@RequestBody @Valid
@@ -41,8 +44,7 @@ public class MovieSessionController {
                                                                      LocalDate date) {
         List<MovieSession> movieSessions = movieSessionService.findAvailableSessions(movieId, date);
         return movieSessions.stream()
-                .map(m -> movieSessionMapper
-                        .map(m))
+                .map(movieSessionMapper::map)
                 .collect(Collectors
                         .toList());
     }
